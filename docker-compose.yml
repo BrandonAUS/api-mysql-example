@@ -1,0 +1,10 @@
+version: "2"
+services:
+  app:
+    image: golang:1.16-alpine
+    volumes:
+        - .:/c/users/bwill/documents/github.com/brandonaus/api-mysql-example
+    working_dir: /c/users/bwill/documents/github.com/brandonaus/api-mysql-example
+    command: go run main.go
+    ports:
+        - '30456:30456'
