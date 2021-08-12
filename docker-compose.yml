@@ -3,8 +3,34 @@ services:
   app:
     image: golang:1.16-alpine
     volumes:
-        - .:/c/users/bwill/documents/github.com/brandonaus/api-mysql-example
-    working_dir: /c/users/bwill/documents/github.com/brandonaus/api-mysql-example
+        - .:/Users/brandon/Documents/GitHub.com/brandonaus/api-mysql-example
+    working_dir: /Users/brandon/Documents/GitHub.com/brandonaus/api-mysql-example
     command: go run main.go
     ports:
         - '30456:30456'
+  db:
+    image: mysql:5.7
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_user_pass
+    ports:
+      - "6033:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
+volumes:
+  dbdata:
